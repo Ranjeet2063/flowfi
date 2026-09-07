@@ -48,7 +48,9 @@ use storage::{
     config_exists, load_config, load_stream, next_stream_id, save_config, save_stream,
     try_load_config, try_load_stream,
 };
-use types::{BatchStreamInput, DisputeInitiatedData, DisputeState, ProtocolConfig, Stream, StreamStatus};
+use types::{
+    BatchStreamInput, DisputeInitiatedData, DisputeState, ProtocolConfig, Stream, StreamStatus,
+};
 
 /// Maximum allowed protocol fee: 1 000 bps = 10%.
 const MAX_FEE_RATE_BPS: u32 = 1_000;
@@ -1047,11 +1049,7 @@ impl StreamContract {
     /// - `StreamNotActive`      — stream is inactive.
     /// - `NoArbiterConfigured`  — stream has no arbiter.
     /// - `DisputeAlreadyActive` — a dispute is already in progress.
-    pub fn initiate_dispute(
-        env: Env,
-        caller: Address,
-        stream_id: u64,
-    ) -> Result<(), StreamError> {
+    pub fn initiate_dispute(env: Env, caller: Address, stream_id: u64) -> Result<(), StreamError> {
         caller.require_auth();
 
         let mut stream = load_stream(&env, stream_id)?;

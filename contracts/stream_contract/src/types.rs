@@ -23,7 +23,6 @@ pub enum DisputeState {
     Resolved,
 }
 
-
 /// Status of a payment stream.
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]

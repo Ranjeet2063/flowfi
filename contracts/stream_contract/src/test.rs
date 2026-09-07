@@ -3154,15 +3154,14 @@ fn test_initiate_dispute_by_sender_succeeds() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     client.initiate_dispute(&sender, &id);
 
     let stream = client.get_stream(&id).unwrap();
-    assert!(matches!(
-        stream.dispute_state,
-        DisputeState::Initiated(_)
-    ));
+    assert!(matches!(stream.dispute_state, DisputeState::Initiated(_)));
     assert!(stream.paused);
     assert_eq!(stream.status, StreamStatus::Paused);
 }
@@ -3178,15 +3177,14 @@ fn test_initiate_dispute_by_recipient_succeeds() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     client.initiate_dispute(&recipient, &id);
 
     let stream = client.get_stream(&id).unwrap();
-    assert!(matches!(
-        stream.dispute_state,
-        DisputeState::Initiated(_)
-    ));
+    assert!(matches!(stream.dispute_state, DisputeState::Initiated(_)));
 }
 
 #[test]
@@ -3201,7 +3199,9 @@ fn test_initiate_dispute_unauthorized_caller_fails() {
     let stranger = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     assert_eq!(
         client.try_initiate_dispute(&stranger, &id),
@@ -3239,7 +3239,9 @@ fn test_initiate_dispute_already_active_fails() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     client.initiate_dispute(&sender, &id);
 
@@ -3275,7 +3277,9 @@ fn test_initiate_dispute_emits_event() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     client.initiate_dispute(&sender, &id);
 
@@ -3312,7 +3316,9 @@ fn test_resolve_dispute_arbiter_splits_funds() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     client.initiate_dispute(&sender, &id);
 
@@ -3340,7 +3346,9 @@ fn test_resolve_dispute_full_to_sender() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
     client.resolve_dispute(&arbiter, &id, &10_000, &0);
 
@@ -3360,7 +3368,9 @@ fn test_resolve_dispute_full_to_recipient() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
     client.resolve_dispute(&arbiter, &id, &0, &10_000);
 
@@ -3381,7 +3391,9 @@ fn test_resolve_dispute_unauthorized_non_arbiter_fails() {
     let stranger = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
 
     assert_eq!(
@@ -3401,7 +3413,9 @@ fn test_resolve_dispute_no_active_dispute_fails() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
 
     // No dispute initiated — resolve should fail.
     assert_eq!(
@@ -3421,7 +3435,9 @@ fn test_resolve_dispute_invalid_split_fails() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
 
     // 6_000 + 3_000 = 9_000 ≠ 10_000 remaining → invalid.
@@ -3442,7 +3458,9 @@ fn test_resolve_dispute_negative_payout_fails() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
 
     assert_eq!(
@@ -3462,7 +3480,9 @@ fn test_resolve_dispute_emits_event() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
     client.resolve_dispute(&arbiter, &id, &7_000, &3_000);
 
@@ -3501,7 +3521,9 @@ fn test_cancel_blocked_during_active_dispute() {
     let arbiter = Address::generate(&env);
     let client = create_contract(&env);
 
-    let id = create_escrow_stream(&env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100);
+    let id = create_escrow_stream(
+        &env, &client, &sender, &recipient, &token, &arbiter, 10_000, 100,
+    );
     client.initiate_dispute(&sender, &id);
 
     // Unilateral cancel must be blocked while dispute is active.
