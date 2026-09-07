@@ -29,12 +29,12 @@ export default defineConfig({
                 'src/services/sorobanService.ts',
                 'src/workers/soroban-event-worker.ts',
             ],
-            // Restore thresholds to 60% as targeted in the coverage improvement task.
+            // Enforce CI coverage gate thresholds per issue #1333.
             thresholds: {
-                statements: 60,
-                branches: 60,
-                functions: 60,
-                lines: 60,
+                statements: 80,
+                branches: 75,
+                functions: 80,
+                lines: 80,
             },
         },
         testTimeout: 30000,
