@@ -1,23 +1,30 @@
 coverage:
   status:
     project:
+      default:
+        target: 80%
+        threshold: 1%
       backend:
-        target: 60%
+        target: 80%
+        threshold: 1%
         flags:
           - backend
       contracts:
         target: 70%
+        threshold: 1%
         flags:
           - contracts
       frontend:
-        target: auto
+        target: 80%
+        threshold: 1%
         flags:
           - frontend
     patch:
       default:
-        target: 60%
+        target: 80%
+        threshold: 1%
 
 comment:
-  layout: "diff, flags, files"
+  layout: "reach, diff, flags, files"
   behavior: default
   require_changes: false
